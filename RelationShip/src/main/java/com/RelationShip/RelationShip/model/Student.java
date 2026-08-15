@@ -1,5 +1,6 @@
 package com.RelationShip.RelationShip.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class Student {
 
 //    @ManyToOne(optional = false) This thing will make sure that a relation should exist in java
 //    @JoinColumn(name = "dept_id", nullable = false) This thing will make sure that a relationship should exist in the database
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
+    @JsonBackReference
     private Department department;
 }
