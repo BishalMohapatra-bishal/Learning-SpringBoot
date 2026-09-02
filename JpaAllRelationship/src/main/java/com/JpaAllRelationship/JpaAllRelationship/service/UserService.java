@@ -32,25 +32,30 @@ public class UserService {
 
         Long profileId = (savesUser.getProfile() != null)  ? savesUser.getProfile().getId() : null;
         String bio = (savesUser.getProfile() != null) ? savesUser.getProfile().getBio() : null;
-        return new UserResponseDto(savesUser.getId(), savesUser.getName(),
-                profileId, bio);
+        return new UserResponseDto(savesUser.getId(), savesUser.getName(), profileId, bio);
     }
 
     public UserResponseDto updateUserById(Long id, UserRequestDto userRequestDto) {
         if (id == null) {
-            throw new NullPointerException("No id found");
+            throw new IllegalArgumentException("No id found");
         }
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No user found with this is." + id));
-        user.setName(userRequestDto.name());
+                .orElseThrow(() -> new RuntimeException("No user found with this id " + id));
 
-        Profile profile = profileRepository.findById(userRequestDto.profileId())
-                .orElseThrow(() -> new RuntimeException("No profile associated with this provided id"));
+        if (userRequestDto.name() != null) {
+            user.setName(userRequestDto.name());
+        }
 
-//        user.setProfile();
-        return null;
+        if (userRequestDto.profileId() != null) {
+            Profile profile = profileRepository.findById(userRequestDto.profileId())
+                    .orElseThrow(() -> new RuntimeException("No profile associated with this provided id"));
+            user.setProfile(profile);
+        }
 
+        User savedUser = userRepository.save(user);
 
-
+        Long profileId = (savedUser.getProfile() != null) ? savedUser.getProfile().getId() : null;
+        String bio = (savedUser.getProfile() != null) ? savedUser.getProfile().getBio() : null;
+        return new UserResponseDto(savedUser.getId(), savedUser.getName(), profileId, bio);
     }
 }
