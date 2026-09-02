@@ -10,6 +10,7 @@ import com.JpaAllRelationship.JpaAllRelationship.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +58,38 @@ public class UserService {
         Long profileId = (savedUser.getProfile() != null) ? savedUser.getProfile().getId() : null;
         String bio = (savedUser.getProfile() != null) ? savedUser.getProfile().getBio() : null;
         return new UserResponseDto(savedUser.getId(), savedUser.getName(), profileId, bio);
+    }
+
+    public UserResponseDto getUserById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Use ID cannot be null");
+        }
+        User savedUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No user found with ID" + id));
+
+        Long profileId = (savedUser.getProfile() != null) ? savedUser.getProfile().getId() : null;
+        String bio = (savedUser.getProfile() != null) ? savedUser.getProfile().getBio() : null;
+
+        return new UserResponseDto(
+                savedUser.getId(),
+                savedUser.getName(),
+                profileId,
+                bio);
+    }
+
+    public List<UserResponseDto> getAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> {
+                    Long profileId = (user.getProfile() != null) ? user.getProfile().getId() : null;
+                    String bio = (user.getProfile() != null) ? user.getProfile().getBio() : null;
+                    return new UserResponseDto(
+                            user.getId(),
+                            user.getName(),
+                            profileId,
+                            bio
+                    );
+                })
+                .toList();
     }
 }
