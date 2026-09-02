@@ -19,4 +19,7 @@ public class Profile {
 
     @Column(nullable = false)
     private String bio;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
 }

@@ -24,4 +24,18 @@ public class User {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+        if (profile != null) {
+            profile.setUser(this);
+        }
+    }
+
+    public void removeProfile() {
+        if (this.profile != null) {
+            this.profile.setUser(null);
+            this.profile = null;
+        }
+    }
+
 }
