@@ -15,7 +15,7 @@ public class ProfileService {
 
     public ProfileResponseDto createProfile(ProfileRequestDto profileRequestDto) {
         if (profileRequestDto == null) {
-            throw new IllegalArgumentException("Request can not be null");
+            throw new IllegalArgumentException("RequestDto can not be null");
         }
 
         Profile profile = new Profile();
