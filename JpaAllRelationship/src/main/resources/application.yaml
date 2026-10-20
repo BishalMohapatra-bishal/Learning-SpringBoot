@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: JpaAllRelationship
+
+  datasource:
+    url: jdbc:mysql://localhost/JPA_AllRelationship?createDatabaseIfNotExist=true
+    username: root
+    password: pass2903
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
